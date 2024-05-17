@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'user.css' %}">
+</head>
+<body>
+    <div class="alluser">
+        <div class="header">
+            <div class="icons">
+                <div class="ic"><i class="fas fa-search" id="searchicon"></i></div>
+                <div class="ic"><i class="fas fa-comments" id="groupicon"></i></div>
+                <div class="ic"><i class="fas fa-hand-holding-usd"></i></div>
+            </div>
+        </div>
+
+        <div class="profie">
+            <div class="container">
+                <div class="profile-pic">
+                    <img src="{% static 'images/user.jpg' %}" alt="Profile Picture">
+                </div>
+                <div>
+                    <h2>User</h2>
+                    <h3>{{ user.username }}</h3>
+                </div>
+            </div>
+            <div class="user-info">
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit, ipsam at. Quasi necessitatibus, quibusdam delectus voluptates fugiat sunt optio, alias corrupti non asperiores libero autem? Voluptates sint dolore sunt laboriosam?</p>
+                <p>Study at: Some University College</p>
+            </div>
+        </div>
+
+        <!-- Repeat the profile structure as needed -->
+        <div class="profie">
+            <div class="container">
+                <div class="profile-pic">
+                    <img src="{% static 'images/user.jpg' %}" alt="Profile Picture">
+                </div>
+                <div>
+                    <h2>User</h2>
+                    <h3>{{ user.username }}</h3>
+                </div>
+            </div>
+            <div class="user-info">
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit, ipsam at. Quasi necessitatibus, quibusdam delectus voluptates fugiat sunt optio, alias corrupti non asperiores libero autem? Voluptates sint dolore sunt laboriosam?</p>
+                <p>Study at: Some University College</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
