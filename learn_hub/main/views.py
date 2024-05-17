@@ -3,13 +3,16 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 from .models import Profile, Mentor, Course, Admin
 
 @csrf_exempt
 def index(request):
     if request.user.is_authenticated:
         if request.user.profile.role == 'admin':
-            return render(request, 'index.html')
+            return redirect('index')
+        elif request.user.profile.role == 'tutor':
+            return redirect('tutor_page')
         else:
             return redirect('user_page')
     return redirect('login')
@@ -22,7 +25,12 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('/')
+            if user.profile.role == 'admin':
+                return redirect('index')
+            elif user.profile.role == 'tutor':
+                return redirect('tutor_page')
+            else:
+                return redirect('user_page')
         else:
             messages.error(request, 'Invalid username or password')
     return render(request, 'login.html')
@@ -36,12 +44,16 @@ def signup_view(request):
         confirm_password = request.POST.get('confirm_password')
         role = request.POST.get('role')
         if password == confirm_password:
-            user = User.objects.create_user(username=username, email=email, password=password)
-            user.save()
-            profile = Profile.objects.get(user=user)
-            profile.role = role
-            profile.save()
-            return redirect('/login')
+            if User.objects.filter(username=username).exists():
+                messages.error(request, 'Username already exists')
+            elif User.objects.filter(email=email).exists():
+                messages.error(request, 'Email already exists')
+            else:
+                user = User.objects.create_user(username=username, email=email, password=password)
+                user.save()
+                profile = Profile.objects.create(user=user, role=role)
+                profile.save()
+                return redirect('/login')
         else:
             messages.error(request, 'Passwords do not match')
     return render(request, 'signup.html')
@@ -50,8 +62,21 @@ def logout_view(request):
     logout(request)
     return redirect('/login')
 
+@login_required
 def user_page(request):
     return render(request, 'user_page.html')
+
+@login_required
+def admin_page(request):
+    if request.user.profile.role != 'admin':
+        return redirect('user_page')
+    return render(request, 'index.html')
+
+@login_required
+def tutor_page(request):
+    if request.user.profile.role != 'tutor':
+        return redirect('user_page')
+    return render(request, 'tutor_page.html')
 
 @csrf_exempt
 def add_course(request):

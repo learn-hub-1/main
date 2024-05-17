@@ -550,3 +550,9 @@ button:hover{
 	  padding: 10px;
 	}
   }
+  .footer {
+	background-color: #f2f2f2;
+	border-top-left-radius: 50% 20px;
+	border-top-right-radius: 50% 20px;
+	padding: 20px;
+  }

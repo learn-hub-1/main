@@ -35,5 +35,5 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     role = models.CharField(max_length=10, choices=USER_ROLES, default='user')
 
-    def str(self):
+    def __str__(self):
         return self.user.username
